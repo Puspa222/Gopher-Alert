@@ -17,7 +17,7 @@
     │   ├── notifier/
     │   │   ├── interface.go
     │   │   ├── console.go
-    │   │   ├── telegram.go
+    │   │   ├── discord.go
     │   │   └── registry.go
     │   │
     │   ├── service/
