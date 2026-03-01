@@ -12,3 +12,7 @@ func (c *ConsoleNotifier) Send(to string, messsage string) error {
 	fmt.Printf("\nSending to %s: %s\n", to, messsage)
 	return nil
 }
+
+func (c *ConsoleNotifier) Name() string {
+	return "console"
+}

@@ -62,7 +62,6 @@ gopher-alert/
 
 ## Architecture
 
-```mermaid
 flowchart TD
     A[Client (curl, Postman, frontend)]
     B[HTTP Layer (Gin)]
@@ -74,7 +73,6 @@ flowchart TD
     B --> C
     C --> D
     D --> E
-```
 
 - **HTTP Layer:** Handles requests, validation, and middleware.
 - **Service Layer:** Contains the core business logic.
@@ -101,3 +99,100 @@ go run ./cmd/app
 ```
 
 ---
+
+## API Usage
+
+### Send Notification
+
+Send a POST request to `/v1/send` with the following JSON body:
+
+```json
+{
+    "provider": "discord",
+    "message": "Hello from Gopher-Alert!",
+    "to":"employee",
+}
+```
+
+**Headers:**
+- `Content-Type: application/json`
+- `X-API-Key: <your-api-key>` 
+
+**Example using curl:**
+```bash
+curl -X POST http://localhost:8080/api/notify \
+    -H "Content-Type: application/json" \
+    -H "X-API-Key: your-api-key" \
+    -d '{"provider":"discord","message":"Test message", "to":"Admin"}'
+```
+
+### Response
+
+```json
+{
+    "status": "sent",
+}
+```
+
+---
+
+## Adding New Providers
+To add a new provider (e.g., SMS):
+
+1. **Create a new file** in `internal/notifier/` (e.g., `sms.go`):
+
+    ```go
+    package notifier
+
+    import "fmt"
+
+    // SMSNotifier implements the Notifier interface
+    type SMSNotifier struct{}
+
+    // Constructor
+    func NewSMSNotifier() *SMSNotifier {
+        return &SMSNotifier{}
+    }
+
+    // Send sends a message to a recipient
+    func (s *SMSNotifier) Send(to string, message string) error {
+        // Implement your SMS sending logic here
+        fmt.Printf("[SMS] To: %s | Message: %s\n", to, message)
+        return nil
+    }
+
+    // Name returns the unique name of the provider
+    func (s *SMSNotifier) Name() string {
+        return "sms"
+    }
+    ```
+
+2. **Register your provider** in `module.go`:
+
+    ```go
+    fx.Provide(
+        fx.Annotate(
+            NewSMSNotifier,
+            fx.As(new(Notifier)),                // Bind to interface
+            fx.ResultTags(`group:"notifiers"`),  // Add to notifier group
+        ),
+    )
+    ```
+
+3. **No manual registry update needed:**  
+   The registry automatically collects all providers in the `group:"notifiers"` group.
+
+4. **Test your provider:**  
+   Use the `/v1/send` endpoint with `"provider": "sms"` in your request body.
+
+This approach works for any new provider—just implement the `Notifier` interface and register it as shown above.
+
+## Contributing
+
+Contributions are welcome! Please open issues or submit pull requests for improvements or new features.
+
+---
+
+## License
+
+This project is licensed under the MIT License.

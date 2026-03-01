@@ -7,8 +7,17 @@ var Module = fx.Module(
 	fx.Provide(
 		fx.Annotate(
 			NewConsoleNotifier,
-			fx.As(new(Notifier)),
+			fx.As(new(Notifier)), // bind to interface
+			fx.ResultTags(`group:"notifiers"`),
 		),
-		NewRegistry,
+		fx.Annotate(
+			NewDiscordNotifier,
+			fx.As(new(Notifier)),
+			fx.ResultTags(`group:"notifiers"`),
+		),
+		fx.Annotate(
+			NewRegistry,
+			fx.ParamTags(`group:"notifiers"`),
+		),
 	),
 )

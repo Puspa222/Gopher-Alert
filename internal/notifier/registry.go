@@ -6,12 +6,12 @@ type Registry struct {
 	providers map[string]Notifier
 }
 
-func NewRegistry(console Notifier) *Registry {
-	return &Registry{
-		providers: map[string]Notifier{
-			"console": console,
-		},
+func NewRegistry(notifiers []Notifier) *Registry {
+	provs := make(map[string]Notifier)
+	for _, n := range notifiers {
+		provs[n.Name()] = n
 	}
+	return &Registry{providers: provs}
 }
 
 func (r *Registry) Get(name string) (Notifier, error) {

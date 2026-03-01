@@ -9,3 +9,7 @@ func NewDiscordNotifier() *DiscordNotifier {
 func (d *DiscordNotifier) Send(to, message string) error {
 	return nil
 }
+
+func (d *DiscordNotifier) Name() string {
+	return "discord"
+}
