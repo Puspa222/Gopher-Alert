@@ -62,17 +62,7 @@ gopher-alert/
 
 ## Architecture
 
-flowchart TD
-    A[Client (curl, Postman, frontend)]
-    B[HTTP Layer (Gin)]
-    C[Service Layer (NotificationService)]
-    D[Provider Registry (Registry)]
-    E[Notifiers (Console, Discord, etc.)]
-
-    A --> B
-    B --> C
-    C --> D
-    D --> E
+![alt text](assets/image.png)
 
 - **HTTP Layer:** Handles requests, validation, and middleware.
 - **Service Layer:** Contains the core business logic.
