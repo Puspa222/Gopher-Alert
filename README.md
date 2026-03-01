@@ -10,9 +10,11 @@
     │       └── main.go
     │
     ├── internal/
-    │   ├── http/
-    │   │   ├── handler.go
-    │   │   └── middleware.go
+    ├── http/
+    │   ├── module.go       
+    │   ├── server.go       
+    │   ├── handler.go
+    │   └── middleware.go
     │   │
     │   ├── notifier/
     │   │   ├── interface.go
