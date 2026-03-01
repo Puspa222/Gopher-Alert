@@ -1,5 +1,7 @@
 package notifier
 
+import "fmt"
+
 type Registry struct {
 	providers map[string]Notifier
 }
@@ -12,7 +14,10 @@ func NewRegistry(console Notifier) *Registry {
 	}
 }
 
-func (r *Registry) Get(name string) (Notifier, bool) {
+func (r *Registry) Get(name string) (Notifier, error) {
 	p, ok := r.providers[name]
-	return p, ok
+	if !ok {
+		return nil, fmt.Errorf("provider not found")
+	}
+	return p, nil
 }
