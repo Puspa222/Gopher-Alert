@@ -1,9 +1,23 @@
 package service
 
-type NotificationService struct{}
+import (
+	"github.com/puspa222/gopher-alert/internal/notifier"
+)
 
-func NewNotificationService() *NotificationService {
-	return &NotificationService{}
+type NotificationService struct {
+	registry *notifier.Registry
 }
 
-func (s *NotificationService) Get() {}
+func NewNotificationService(r *notifier.Registry) *NotificationService {
+	return &NotificationService{
+		registry: r,
+	}
+}
+
+func (s *NotificationService) Send(provider, to, message string) error {
+	n, err := s.registry.Get(provider)
+	if err != nil {
+		return err
+	}
+	return n.Send(to, message)
+}
