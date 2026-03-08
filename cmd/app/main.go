@@ -4,6 +4,7 @@ import (
 	"github.com/puspa222/gopher-alert/internal/http"
 	"github.com/puspa222/gopher-alert/internal/notifier"
 	"github.com/puspa222/gopher-alert/internal/service"
+	"github.com/puspa222/gopher-alert/internal/storage"
 	"go.uber.org/fx"
 )
 
@@ -12,6 +13,7 @@ func main() {
 		http.Module,
 		notifier.Module,
 		service.Module,
+		storage.Module,
 		// config.Module,
 	)
 
