@@ -4,6 +4,7 @@ go 1.24.13
 
 require (
 	github.com/gin-gonic/gin v1.11.0
+	github.com/mattn/go-sqlite3 v1.14.34
 	go.uber.org/fx v1.24.0
 )
 
